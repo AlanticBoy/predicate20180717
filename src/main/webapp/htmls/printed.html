@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="../js/jquery.PrintArea.js"></script>
+    <script type="text/javascript" src="../js/jprint/jquery-1.4.4.min.js"></script>
+    <link rel="stylesheet" href="../cloud/cloud_css/style.css">
+    <script type="text/javascript">
+
+        function Print() {
+            alert("oos")
+         $("#printArea").printArea();
+        }
+    </script>
+</head>
+<body>
+<div id="printArea">
+    <table border="1">
+        <tr>
+            <h2>郑州轻工业学院</h2>
+        </tr>
+        <tr>
+            <td>设备名称</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>使用单位</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>单价</td>
+            <td></td>
+            <td>购置时间</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>设备编号</td>
+            <td><h2 id="maxNo"></h2></td>
+        </tr>
+
+    </table>
+</div>
+
+<div class="main_window">
+    <div class="cloud" data-type="white_4" style="top: 238px;" data-speed="1"></div>
+
+</div>
+<input type="button" onclick="Print()" value="打印"/>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/cache
+        http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!--spring整合ehcache-->
+    <!--配置ehcache缓存-->
+    <cache:annotation-driven cache-manager="cacheManager"/>
+
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="ehcache"/>
+    </bean>
+
+    <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:cache/ehcache.xml"/>
+    </bean>
+
+
+    <!--说说这个几个注解的使用-->
+    <!--@Cacheable主要针对方法配置，能够根据方法的请求参数对其结果进行缓存。
+    value,缓存的名称，在 spring 配置文件中定义，必须指定至少一个
+    key,缓存的 key，可以为空，如果指定要按照 SpEL 表达式编写，如果不指定，则缺省按照方法的所有参数进行组合
+    condition,缓存的条件，可以为空，使用 SpEL 编写，返回 true 或者 false，只有为 true 才进行缓存
+    =====================================================================================================
+    @CachEvict主要针对方法配置，能够根据一定的条件对缓存进行清空。
+    value,缓存的名称，在 spring 配置文件中定义，必须指定至少一个
+    key,缓存的 key，可以为空，如果指定要按照 SpEL 表达式编写，如果不指定，则缺省按照方法的所有参数进行组合
+    condition,缓存的条件，可以为空，使用 SpEL 编写，返回 true 或者 false，只有为 true 才清空缓存
+    -->
+
+    <bean class="com.predicate.user.cacheManager.CacheUtil">
+        <property name="cacheManager" ref="cacheManager"/>
+    </bean>
+
+
+</beans>

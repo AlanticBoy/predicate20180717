@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       ">
+
+<bean id="quartzController" class="com.predicate.quartz.task.QuartzTask"/>
+
+    <bean id="jobTask"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 需要包装的类,即调度类 -->
+        <property name="targetObject">
+            <ref bean="quartzController"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <!-- 具体的方法 -->
+            <value>sayHello</value>
+        </property>
+    </bean>
+
+    <!-- 调度触发器方式 -->
+    <bean id="cronTriggerBean"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="jobTask"/>
+        </property>
+        <!-- cron表达式 -->
+      <!--  <property name="cronExpression">
+            <value>0/4 * * * * ? *</value>
+        </property>-->
+        <property name="cronExpression">
+            <value>0 0 0/1 * * ? </value>
+        </property>
+    </bean>
+
+    <!-- 调度工厂 -->
+    <bean id="SpringJobSchedulerFactoryBean"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="cronTriggerBean"/>
+            </list>
+        </property>
+    </bean>
+
+</beans>

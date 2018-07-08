@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:jms="http://www.springframework.org/schema/jms"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd">
+
+    <context:component-scan base-package="com.fusong"/>
+    <mvc:annotation-driven/>
+    <!--创建连接工厂-->
+    <bean id="connectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory" destroy-method="stop">
+        <property name="connectionFactory">
+            <bean class="org.apache.activemq.ActiveMQConnectionFactory">
+                <property name="brokerURL">
+                    <!--默认连接端口为61616-->
+                    <value>tcp://172.21.3.55:61616</value>
+                </property>
+                <property name="userName" value="admin"/>
+                <property name="password" value="admin"/>
+            </bean>
+        </property>
+        <property name="maxConnections" value="100"/>
+    </bean>
+
+    <!--使用缓存可以提升效率-->
+    <bean id="cachingConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+        <property name="targetConnectionFactory" ref="connectionFactory"/>
+        <!-- Session缓存数量 -->
+        <property name="sessionCacheSize" value="100"/>
+    </bean>
+
+    <!--设置消息队列的名字，,创建目的地-->
+    <bean id="destination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="queuehappy"/>
+    </bean>
+
+
+    <!-- 定义JmsTemplate的Queue类型 -->
+    <bean id="jmsQueueTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <!-- 这个connectionFactory对应的是我们定义的Spring提供的那个ConnectionFactory对象 -->
+        <constructor-arg ref="cachingConnectionFactory"/>
+        <!-- 非pub/sub模型（发布/订阅），即队列模式 。也就是当pubSubDomain为false的时候，是队列模式-->
+        <property name="pubSubDomain" value="false"/>
+        <!--加载目的地-->
+        <property name="defaultDestination" ref="destination"/>
+        <!--配置消息转换器-->
+        <property name="messageConverter">
+            <bean class="org.springframework.jms.support.converter.SimpleMessageConverter"/>
+        </property>
+        <property name="receiveTimeout" value="10000"/>
+    </bean>
+    <!-- 配置消息队列监听器（Queue） -->
+    <bean id="queueMessageListener" class="com.fusong.ActiveQueue.MesageListener"/>
+     <!--消息队列监听者-->
+    <jms:listener-container destination-type="queue" container-type="default"
+                            connection-factory="cachingConnectionFactory" acknowledge="auto">
+        <jms:listener destination="queuehappy" ref="queueMessageListener"/>
+    </jms:listener-container>
+
+
+    <!--=========================================================以上是Queue类型=========================================================-->
+
+
+</beans>

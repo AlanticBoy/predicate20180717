@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <import resource="classpath:spring/applicationContext_mybatis.xml"/>
+    <!--进行shiro与spring整合-->
+
+    <!--配置LifeCycleBeanPostPocessor,配置该项保证了shiro内部lifecycle函数的bean执行-->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!--配置shiro的Session管理器，加入sessionDao可以实现单点登录-->
+    <bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.MemorySessionDAO"/>
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <property name="sessionDAO" ref="sessionDAO"/>
+        <property name="globalSessionTimeout" value="3600000"/>
+        <property name="sessionValidationSchedulerEnabled" value="true"/>
+        <property name="sessionIdCookie" ref="sessionIdCookie"/>
+    </bean>
+    <!-- 指定本系统SESSIONID, 默认为: JSESSIONID 问题: 与SERVLET容器名冲突, 如JETTY, TOMCAT 等默认JSESSIONID,
+        当跳出SHIRO SERVLET时如ERROR-PAGE容器会为JSESSIONID重新分配值导致登录会话丢失! -->
+    <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg name="name" value="fuosng.sessionId"/>
+    </bean>
+
+    <!--配置shiro安全管理器-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="sessionManager" ref="sessionManager"/>
+        <property name="realm" ref="customRealm"/>
+        <property name="cacheManager" ref="springcacheManager"/>
+    </bean>
+
+    <!--###########################################自定义realm配置###############################################-->
+    <!--配置自定义realm-->
+    <!--<bean id="customRealm" class="com.predicate.shiro.realm.CustomRealm">
+        &lt;!&ndash;credentialsMatcher的作用为：把我们装载在SimpleAuthenticationInfo里的密码按配置进行加密&ndash;&gt;
+        <property name="credentialsMatcher">
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <property name="hashAlgorithmName" value="MD5"/>
+                <property name="hashIterations" value="1"/>
+            </bean>
+        </property>
+    </bean>-->
+    <!--###########################################自定义realm配置完毕###############################################-->
+
+    <!--##########################用户尝试多次登录实验配置#############################-->
+    <!--下面进行限制用户尝试登录次数的实验，防止多次尝试，暴力破解密码情况出现。
+    ①关于这个我们需要实现一个RetryLimitCredentialsMatchers继承至HashedCredentialsMatcher。
+    ②加入缓存，在每次验证用户名密码之前先验证用户名尝试次数，如果超过5次就抛出尝试过多异常，
+    否则验证用户名密码，验证成功把尝试次数清零，不成功则直接退出。
+    ③这就要求我们配置cacheManager，用ehcache缓存（shiro的好搭档）
+    -->
+    <bean id="customRealm" class="com.predicate.shiro.realm.CustomRealm">
+        <property name="credentialsMatcher" ref="retryLimitCredentialsMatcher"/>
+    </bean>
+
+
+    <!--配置EhcacheManager缓存管理器,管理ehcache-->
+    <bean id="springcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:cache/shiro_ehcache.xml"/>
+    </bean>
+
+
+
+    <bean id="retryLimitCredentialsMatcher" class="com.predicate.shiro.credial.RetryLimitCredentialsMatcher">
+        <constructor-arg ref="springcacheManager"/>
+        <property name="storedCredentialsHexEncoded" value="true"/>
+        <property name="hashAlgorithmName" value="MD5"/>
+        <property name="hashIterations" value="1"/>
+    </bean>
+    <!--##########################用户尝试多次登录实验完##########################-->
+
+    <!--##########################自定义过滤器配置##########################-->
+    <bean id="authorizationExpectionFilter" class="com.predicate.shiro.shiroFilter.AuthorizationExpectionFilter"/>
+    <!--实现单点登录-->
+    <bean id="kickoutSessionControlFilter" class="com.predicate.shiro.shiroFilter.KickoutSessionControlFilter">
+        <property name="cacheManager" ref="springcacheManager"/>
+        <property name="sessionManager" ref="sessionManager"/>
+        <property name="kickoutAfter" value="false"/>
+        <property name="maxSession" value="1"/>
+        <!--踢出后的地址-->
+        <property name="kickUrl" value="/user/kickout.action"/>
+    </bean>
+    <!--##########################自定义过滤器配置完##########################-->
+
+
+    <!--配置shiroFilter，名字要与web.xml里的相同-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!--第一步：加入shiro核心安全接口-->
+        <property name="securityManager" ref="securityManager"/>
+        <!--第二步：配置身份认证失败，跳转到登录界面-->
+        <property name="loginUrl" value="/jsps/login.jsp"/>
+        <!--第三步：配置用户访问未对其授权的资源时的跳转链接-->
+        <property name="unauthorizedUrl" value="/jsps/unanthorizedUrl.jsp"/>
+
+        <!--第四步，配置过滤器链-->
+        <property name="filters">
+            <util:map>
+                <!--原来这里的key是下面路径里的名字-->
+                <!-- <entry key="authfilter">
+                     <bean class="com.predicate.shiro.shiroFilter.AuthorizationExpectionFilter"/>
+                 </entry>-->
+                <!--配置单点登录-->
+                <entry key="kickout" value-ref="kickoutSessionControlFilter"/>
+            </util:map>
+        </property>
+        <!--第五步，配置允许访问的和不允许访问的资源的集合-->
+        <property name="filterChainDefinitionMap" ref="failterChainDefinitionMap"/>
+    </bean>
+
+    <!--根据自己定义的类返回允许访问的和不允许访问的路径的集合-->
+    <bean id="failterChainDefinitionMapBuilder"
+          class="com.predicate.shiro.factoryMap.FailterChainDefinitionMapBuilder"/>
+    <bean id="failterChainDefinitionMap" factory-bean="failterChainDefinitionMapBuilder"
+          factory-method="buildFailterChainDefinitionMap"/>
+
+</beans>

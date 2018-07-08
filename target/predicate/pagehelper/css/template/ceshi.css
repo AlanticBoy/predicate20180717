@@ -1,0 +1,110 @@
+﻿*{ margin:0px; padding:0px;}
+body {
+	-webkit-user-select:none;
+    -webkit-text-size-adjust:none;
+	font-family:"Microsoft Yahei",helvetica;
+	background:#f5f5f5;
+	color:#333;
+	position: relative;
+	word-break:break-all;
+    word-wrap: break-word;
+}
+ul,li{list-style:none;}
+input{outline:none;}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; appearance: none; margin:0; -moz-appearance: textfield;
+} 
+a,a:visited{ text-decoration:none; color:#45AFE3;}
+/*---------------------*/
+.ui-controlgroup {
+    border:1px solid #d5d5d5;
+    border-radius: 2px;
+}
+.ui-field-contain{
+	width: 800px;
+}
+.ui-logo{
+	display:block;
+	position:relative;
+	font-style: normal;
+	background: url(../images/titellogo.png);
+	color:#FFF036;
+	width:40px;
+	padding-left:5px;
+	padding-top:4px;
+	height:30px;
+	font-weight:600;
+	font-size:15px;
+	text-align:center;
+	cursor:pointer;
+	margin-bottom: -23px;
+	margin-left: -5px;
+	z-index: 10;
+}
+.ui-title
+{
+    font-size: 16px !important;
+    font-weight:550;
+    display: block;
+    word-wrap: break-word;
+    background:url(../images/one2.png);
+    min-height: 36px;
+    line-height: 34px;
+    position:relative;
+    border-bottom: none;
+    border-bottom: 1px solid #D5D5D5;
+    padding-left: 33px;
+}
+.ui-controlgroup .ui-checkbox{
+    background: none repeat scroll 0 0 #fff;
+    border-bottom: 1px solid #ebebeb;
+    font-size: 15px;
+    min-height: 32px;
+    line-height: 28px;
+    position:relative;
+}
+.ui-controlgroup .ui-checkbox:first-child{
+    border-radius: 4px 4px 0 0;
+}
+.ui-controlgroup .ui-checkbox:last-child,.ui-controlgroup .ui-li-static:last-child {
+    border-radius:0 0 4px 4px;
+    border-bottom:0 solid #d5d5d5;
+}
+
+.ui-controlgroup .ui-checkbox label {
+    display: block;
+    margin-left: 10px;
+    cursor:pointer;
+    padding: 0px;
+}
+.divQuestion
+{
+	width: 800px;
+    padding-top:10px;
+}
+div.field
+{
+    clear: both;
+    margin:5px 0px;
+    padding: 0 7px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            

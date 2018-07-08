@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--加载静态资源文件-->
+    <context:property-placeholder location="classpath:config/jdbc.properties"/>
+
+    <!--配置数据源-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="url" value="${jdbc_url}"/>
+        <property name="username" value="${jdbc_userName}"/>
+        <property name="password" value="${jdbc_pass}"/>
+        <property name="filters" value="stat"/>
+        <property name="maxActive" value="20"/>
+        <property name="initialSize" value="1"/>
+        <property name="maxWait" value="60000"/>
+        <property name="minIdle" value="1"/>
+        <property name="timeBetweenEvictionRunsMillis" value="3000"/>
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+        <property name="validationQuery" value="SELECT 'x'"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>
+    </bean>
+
+    <!--定义sqlSessionFactory属性-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--配置数据源-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--加载mybatis配置文件-->
+        <property name="configLocation" value="classpath:mybatis/SqlMapConfig.xml"/>
+    </bean>
+
+    <!--扫描mapper.java和mapper.xml-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.predicate.*.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+    <!--扫描service-->
+    <context:component-scan base-package="com.predicate.*.service"/>
+
+    <!--#################################################下面开始进行事务管理的配置#################################################-->
+    <!--第一步，，配置事务管理器管理JDBC-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--第二步，配置事务属性-->
+    <!-- 几种属性的认识：
+     readOnly:true/false 在将事务设置成只读后，相当于将数据库设置成只读数据库，此时若要进行写的操作，会出现错误
+     propagation:PROPAGATION_REQUIRED。(事务传播行为)支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择。
+     isolation：Default。（事务隔离级别）对于多数应用程序，可以优先考虑把数据库系统的隔离级别设为Read Committed。它能够避免脏读取，而且具有较好的并发性能。-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <!--根据方法名指定事务属性-->
+            <tx:method name="get*" propagation="REQUIRED" isolation="READ_COMMITTED" read-only="true"/>
+            <tx:method name="find*" propagation="REQUIRED" isolation="READ_COMMITTED" read-only="true"/>
+            <tx:method name="select*" propagation="REQUIRED" isolation="READ_COMMITTED" read-only="true"/>
+            <tx:method name="insert*" propagation="REQUIRED" isolation="READ_COMMITTED"/>
+            <tx:method name="delete*" propagation="REQUIRED" isolation="READ_COMMITTED"/>
+            <tx:method name="update*" propagation="REQUIRED" isolation="READ_COMMITTED"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!--第三步，配置事务切入点，把事务切入点和事务属性关联起来-->
+    <aop:config>
+        <!-- 配置Pointcut的意义在于：指定哪些方法需要被代理-->
+        <aop:pointcut id="txPointcut" expression="execution(* com.predicate.user.service..*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+    </aop:config>
+    <!--#################################################事务管理的配置完#################################################-->
+
+
+</beans>

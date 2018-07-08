@@ -1,0 +1,184 @@
+/*------------------设置模态框透明度----------------------*/
+/* .registerModal{
+	
+	background: #FFF;
+	filter: alpha(opacity=0.5);
+	
+} */
+
+/*---------------------reset----------------------*/
+
+*{
+	padding:0;
+margin:0;}
+
+html.body{
+	width:100%;
+height:100%;}
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin:0; padding:0; border:0; outline:0;}
+ol, ul, li { list-style:none } 
+body { background:#FFF;overflow: hidden;}
+:focus { outline:0 }
+table { border-collapse:collapse; border-spacing:0 }
+table,table td,table th{border:1px solid #edeada;border-collapse:collapse;}
+address, cite, code, dfn, em, var, i { font-style:normal }
+input[type=button], input[type=submit], button { cursor:pointer; outline:none;}
+.input, select { vertical-align:middle }
+* html .clearfix { zoom:1 }
+*+html .clearfix { zoom:1 }
+textarea{resize:none;}
+a { text-decoration:none; color:#009bd8 }
+.clearfix:after {clear: both;content: ".";display: block;height: 0;overflow: hidden;visibility: hidden;}
+.pos-r{ position:relative;}
+.hide{ display:none;}
+/*---------------------header----------------------*/
+
+/* .header{ height: 84px;margin:26px 50px; overflow: hidden; position: relative; width: 1000px; z-index: 2;}
+.header .hd{position:relative; z-index:0;}
+.header .hd ul{width:100% !important;}
+.header .hd li{}
+.headerNav { right: 0;text-align: left;top: 20px; width: 1000px; position:absolute;}
+.headerNav a{ color:#515151; font-size:12px; padding:0 2px;}
+.headerNav a:hover{ text-decoration:underline; color:#658b98;}
+ */
+ .head{min-width:1000px;  height: 84px; }
+.head img{
+
+	position:absoulute;
+	z-index:0;
+	
+}
+.head table{
+	position:relative;
+	z-index:1;
+}
+.head tr td{
+	padding:10px;
+}
+.head font{
+	 font-family: "Microsoft YaHei" ;
+}
+.head h1{
+	positon:relative;
+	z-index:1;
+}
+.modal fade{
+	position:relative;
+	z-index:9999;
+}
+/*---------------------banner----------------------*/
+/*修改这部分样式,banner修改高度*/
+.banner{ min-width:1000px;  position:relative;  height:805px;}
+.banner .bd{ position:relative; z-index:0;  }
+.banner .bd li .siteWidth{ width:1000px; position:relative;  margin:0 auto;  height:299px;  }
+.banner .bd .txt{ position:absolute; width:415px; top:100px; left:22px;   font:normal 18px/30px "Microsoft YaHei";    }
+.banner-shadow{ height:50px; line-height:50px; background:url(images/foreground/banner-shdow.png) repeat-x;}
+.footer{clear:both;min-width:1000px; height:68px;font-size:12px; color:#999999;width: 100%;}
+/*中间 表格部分样式，修改高度*/
+
+.login-aside{position:absolute; width:300px; height:/*380*/350px; z-index:98; border-radius:5px; left:58%; top:/*40*/30px; margin-top:/*50*/30px;margin-left:-280px;}
+
+.error-box{
+color:#f7ccc8;
+font-size:12px;
+margin-bottom:10px;
+}
+
+/*账号和密码的相关样式*/
+/*需要修改*/
+label.form-label {
+    display: block;
+     /* 左浮动*/
+    float:left;
+    height: auto;
+    line-height: 12px;
+    text-align: left;
+    width: auto;
+	font-size:14px;
+	color:red;
+	/*font-weight:bold;*/
+	text-shadow:1px 1px 1px #4e6877;
+	-o-text-shadow:1px 1px 1px #4e6877;
+	-o-moz-shadow:1px 1px 1px #4e6877;
+	-o-mis-shadow:1px 1px 1px #4e6877;
+	-o-webkit-shadow:1px 1px 1px #4e6877;
+	margin-top:16px;
+	margin-bottom:16px;
+}
+
+/*修改登录窗口总的宽度和高度*/
+#o-box-up,#o-box-down {
+	top: 150px;
+	margin-left:-100px;
+    width:/*320*/450px;
+    height:305px;
+    position:absolute;
+	border-radius:5px;
+	/*添加背景图片*/
+	
+}
+/*修改的地方*/
+.fm-first,.fm-item{
+	float:left;
+}
+
+#o-box-up {
+    background-color:#000;
+    filter:alpha(opacity:40);
+    opacity:0.4;
+}
+ 
+#o-box-down{ padding:30px 0 0 40px;}
+/*密码和账户样式设置*/
+.i-text{ 
+/* 密码框和文本框调小*/
+  width:/*225*/200px;
+  height:25px;
+  margin-top:10px;
+  /*line-height:37px;*/
+  line-height:25px ;
+  border:1px solid #858585;
+  background:#eef3f8;
+  color:#000000;
+  font-size:14px; 
+  text-indent:12px; 
+  box-shadow:1px 1px 1px #dfe4e8 inset;
+  -moz-box-shadow:1px 1px 1px #dfe4e8 inset;
+  -webkit-box-shadow:1px 1px 1px #dfe4e8 inset;
+  -o-box-shadow:1px 1px 1px #dfe4e8 inset;
+  -mis-box-shadow:1px 1px 1px #dfe4e8 inset;
+ }
+ 
+ .yzm{ width:112px;}
+ .yzm-img{ position:absolute; left:130px; top:30px; cursor:pointer;}
+
+.btn-login{ width:242px; height:38px; background:url(images/foreground/login-btn.png) no-repeat; border:none; margin-top:5px;}
+
+
+
+
+.h-light{
+  border:1px solid #80acd9;
+  background:#fff;
+  color:#9cb5cd;
+  font-size:14px; 
+  text-indent:12px; 
+  border-color: #0787be;
+  box-shadow: 0 1px 4px rgba(11, 122, 179, 0.65) inset, 0 0 14px rgba(11, 122, 179, 0.45);
+
+}
+/*footer部分的样式*/
+.footer .img1{
+	position:absoulute;
+	z-index:99;
+}
+.footer ul{
+	list-style-type:none;
+	position:relative;
+	z-index:1;
+	margin-top:-70px;
+}
+.footer ul li{
+	float:left;
+	padding-left:50px;
+}

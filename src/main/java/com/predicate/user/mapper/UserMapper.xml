@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.predicate.user.mapper.UserMapper">
+
+    <!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志 -->
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+    <!--
+        <cache type="org.mybatis.caches.ehcache.EhcacheCache" />
+    -->
+
+    <!--在resultType里实体类默认大写-->
+    <select id="selectAllUser" resultType="com.predicate.user.model.User">
+        SELECT * FROM userlist
+    </select>
+    <select id="selectPermissionsByPhone" parameterType="string" resultType="string">
+        SELECT percode
+FROM permissions
+WHERE id IN (SELECT pid
+              FROM rolePermission
+              WHERE roleid = (SELECT role
+                              FROM user
+                              WHERE phone = #{phone})
+)
+    </select>
+
+    <select id="selectPasswordByPhone" parameterType="string" resultType="com.predicate.user.model.User">
+        SELECT  * from userlist WHERE phone=#{phone}
+    </select>
+
+    <select id="getSubjectByPhoneAndPassword" parameterType="map" resultType="com.predicate.user.model.User">
+         select * from userlist where phone=#{phone} AND password=#{password}
+     </select>
+    <select id="selectAllUnit" resultType="com.predicate.user.model.PageUnit">
+        SELECT * FROM test
+    </select>
+
+
+    <insert id="insertUserInfo" parameterType="java.util.List">
+        INSERT INTO userlist(phone, name, password, email, imageUrl, status) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.phone},#{item.name},#{item.password},#{item.email},#{item.imageUrl},#{item.status})
+        </foreach>
+    </insert>
+
+    <insert id="importExcelByMap" parameterType="java.util.Map">
+        INSERT INTO userlist(phone, name, password, email, imageUrl, status) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.phone},#{item.name},#{item.password},#{item.email},#{item.imageUrl},#{item.status})
+        </foreach>
+    </insert>
+
+    <!--通过帐号和密码查找用户，使用mybatis能有效防止sql注入-->
+    <select id="selectUserByIdAndPass" parameterType="java.util.Map" resultType="com.predicate.user.model.User">
+        select * from userlist WHERE phone=#{phone} AND password=#{password}
+    </select>
+
+    <!--
+        keyColumn的值（id）就是数据库中相应的字段。
+        　　keyProperty是Java对象的属性名。
+    -->
+    <!--通过插入一条记录并返回该记录的主键
+  keyProperty="userId"，这里的userId是我们将来要映射到map里的字段值
+    -->
+    <insert id="addNewUser" parameterType="map">
+        <selectKey keyProperty="userId" order="AFTER" resultType="int">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT Into user(phone, name, password, email) VALUES (#{phone},#{name},#{password},#{email})
+    </insert>
+
+    <insert id="insertMedicalInfo" parameterType="map">
+        INSERT INTO medical VALUES (#{M01},#{M02},#{M03},#{M04},#{M05},#{M06},#{M07},#{M08},#{M09},#{M10},#{M11},#{M12},#{O01},#{O02},#{O03},#{O04},#{O05},#{O06},#{O07},#{J01},#{J02},#{J03},#{J04},#{J05},#{J06},#{C01},#{C02},#{C03},#{C04},#{C05},#{C06},#{C07},#{C08},#{C09_FALSE_0_TRUE_1},#{H01},#{P01},#{P02},#{P03},#{P04},#{P05},#{P06},#{P07},#{P08},#{P09},#{P10},#{Group_})
+    </insert>
+
+    <insert id="insertMedicalInfoTrain" parameterType="map">
+        INSERT INTO train VALUES (#{H01},#{J03},#{C02},#{M03},#{O02},#{C08},#{O03},#{J04},#{C07},#{C01},#{J05},#{C06},#{C04},#{C03},#{P05},#{C05},#{P07},#{P06},#{P04},#{J06},#{Group_})
+    </insert>
+
+
+    <!--通过更新一条记录并返回该记录的主键
+    这里的userId将来要映射到map里
+    -->
+
+
+    <select id="selectByGroup_" parameterType="string" resultType="map">
+       SELECT * FROM train WHERE Group_ =#{groups}
+    </select>
+
+    <update id="updateUser" parameterType="map">
+        <selectKey keyProperty="userId" order="AFTER" resultType="int">
+            SELECT id FROM user WHERE phone=#{phone}
+        </selectKey>
+        UPDATE user SET name=#{name} WHERE phone=#{phone}
+    </update>
+
+    <insert id="insertAUser" parameterType="map">
+        <selectKey keyProperty="userId" order="AFTER" resultType="int">
+            select LAST_INSERT_ID()
+        </selectKey>
+        INSERT Into user(phone, name, password) VALUES (#{phone},#{name},#{password})
+    </insert>
+    <update id="updateAUser" parameterType="map">
+        <selectKey keyProperty="userId" order="AFTER" resultType="int">
+            SELECT id FROM user WHERE phone=#{phone}
+        </selectKey>
+        UPDATE user SET name=#{name} WHERE phone=#{phone}
+    </update>
+
+    <delete id="deleteAllUser">
+        DELETE FROM user
+    </delete>
+
+    <select id="seelctAllFromDq" resultType="map">
+        SELECT * FROM dq
+    </select>
+
+    <select id="selctAllfromSch" resultType="map">
+        select * from sch
+    </select>
+
+    <select id="selectAllFromNmd" resultType="map">
+        SELECT * FROM nmd
+    </select>
+
+    <delete id="deleteUserById" parameterType="int">
+        DELETE FROM user WHERE id=#{id}
+    </delete>
+    <update id="updateAUserById" parameterType="map">
+        UPDATE user SET email=#{email} WHERE id=#{id}
+    </update>
+    <select id="selectUserById" parameterType="int" resultType="map">
+      SELECT * from user WHERE id=#{id}
+    </select>
+</mapper>

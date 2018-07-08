@@ -1,0 +1,62 @@
+@charset "utf-8";
+body{ margin:0px auto; padding:0px; min-height:500px; text-align:center; font-size:12px; font-family:Tahoma,arial,verdana,Georgia,'微软雅黑';}
+div	{ margin:0px auto; padding:0px; line-height:20px; font-size:14px; font-family:Tahoma,arial,verdana,Georgia,'宋体';white-space:normal;word-wrap: break-word;word-break:break-all;}
+img	{ border:0px;}
+ul {margin:0px;padding:0px;list-style-type:none;}
+h1,h2{margin:0px; padding:0px;}
+i{font-style: normal;}
+u {text-decoration: none;}
+
+.main:after { display:block; clear:both; visibility:hidden;}
+.main { display:inline-block; }
+.main { display:block; }
+.mBox	{display:block;width:100%;min-width:1110px;background:#F9F9F9;margin-left: 6%;}
+.mBoxL	{display:block;margin:0;padding:0;float:left;width: 66%;}
+.mBoxR	{display:block;margin-left:4%;padding:0;float:left;width:25%;}
+div.ks_Area {display:none;height:500px;}
+h1.ks {margin:16px auto 5px auto;display:block;font-weight:100;}
+h1.ks a {display:block;color:#F05858;font-weight:550;text-decoration: none;line-height:28px;font-size:25px;padding:0 0 10px 0;}
+/*修改部分*/
+div.Exam ul li { background:url(../../images/one2.png);border:1px solid #C9C9C9;border:1px solid #E1E1E1;border-radius:3px;margin:20px 0;text-align:left;font-family:"arial","微软雅黑";position:relative;}
+/*修改五角星的地方*/
+div.Exam ul li i {display:block;position:absolute;top:-7px;left:-6px;font-style: normal;background:url(../../images/titellogo.png); color:#FFF036;width:40px;padding-left:5px;padding-top:-5px;height:30px;font-weight:600;font-size:12px;text-align:center;cursor:pointer;}
+/*修改题目的样式*/
+ 
+div.Exam ul li strong {margin-left:18px;display:block;font-size:17px;font-weight:normal;color:black;line-height:29px;padding:4px 5px 7px 20px; }
+/*修改margin的值*/
+div.Exam ul li strong u {display:block;background:#FFFFFF;margin:7px -5px -7px -37px;padding-bottom:5px;border-top:1px solid #E1E1E1;text-decoration: none;text-align:center;}
+div.Exam ul li strong u em {display:block;width:150px;font-size:12px;padding:2px;text-align:center;font-style: normal;color:#FF0000;color:#FFF;background:#3EBA30;margin:0 auto;margin-top:5px;}
+div.Exam ul li strong u img {display:block;margin:7px auto 0 auto;max-width:95%;max-height:120px;cursor:pointer;}
+div.Exam ul li strong u img.max {max-width:99%;max-height:99%;}
+/*做的题的背景修改地方*/
+div.Exam ul li b {display:block;font-size:20px;font-weight:normal;color:#333;margin:0 0;padding:4px 40px;line-height:24px;border-bottom:1px solid #D7D7D7;border-top:1px solid #E1E1E1;border-bottom:1px solid #E1E1E1;margin-bottom:-1px;cursor:pointer;background:#FFFFFF;position:relative;}
+/*div.Exam ul li b.sel {font-weight:100;color:#000;background:#E6FAF8;background:#FCFCFC url(../../images/star2.jpg) no-repeat left center;}
+*/
+div.Exam ul li b.K {color:#1FB00C;}
+/* div.Exam ul li b img {position:absolute;top:12px;right:15px;} */
+div.ExamBtn2 {display:block;padding:20px 0;}
+div.ExamBtn2 u {font-size:18px;font-family:"微软雅黑";color:#FFFFFF;text-decoration:none;padding:9px 18px;margin:0 50px;text-align:center;border-radius:0px;cursor:pointer;}
+div.ExamBtn2 u.btnJJ2 {background:#00ACFF;}
+#JDK {padding:0;width:250px;margin:20px 0 0 20px;position:fixed;bottom:auto;top:auto;right:auto;left:auto;z-index:1000;margin:0 auto;}
+#JDK div {float:left;text-align:left;}
+#JDK div table tr td {font-size:13px;}
+#EOVArea {display:block;margin:0;padding:0;margin-bottom:18px;}
+#EOVArea p {display:block;margin:10px;text-align:center;padding:0;text-align:left;color:#777;font-size: 14px;}
+#EOVArea p b {font-size:25px;font-weight:600;color:#FF0000;font-family:arial;}
+#EOVArea p b i {font-family:arial,微软雅黑;font-size:20px;font-weight:100;color:#FF0000;font-style:normal}
+#EOVArea div table {margin:10px 0 10px 0;padding:0;}
+#EOVArea div table tr td b {width:15px;height:15px;border:1px solid red;font-size:2px;font-weight:100;display:block;}
+#EOVArea div {display:block;width:100%;}
+#EOVArea div span {width:80px;display:block;font-size:14px;font-family:"微软雅黑";color:#FFFFFF;padding:5px 9px;margin:5px 80px;text-align:center;cursor:pointer;}
+#EOVArea div span.btn_JJ2 {background:#00ACFF;opacity: 1;}
+#EOVArea div span:hover.btn_JJ2 {opacity: 0.85;}
+#EOVArea div.EOVbtn2 {margin-left:30px;}
+
+#ExamOrderView{width:296px;/* height:205px; */border-left:1px solid #C82609;border-bottom:1px solid #C82609;}
+
+.ExamOrderViewWait,
+.ExamOrderViewHover,
+.ExamOrderViewVisited{width:59px;height:34px;line-height:34px;float:left;text-align:center;font-size:14px;font-family:arial;border-top:1px solid #906000;border-right:1px solid #906000;overflow:hidden;white-space:nowrap;}
+.ExamOrderViewWait{background-color:#FEFEFE;color:#000000;cursor:pointer;border:1px solid #000000;}
+.ExamOrderViewHover{background-color:green;color:#FFFFFF;font-weight:bold;cursor:default;}
+.ExamOrderViewVisited{background-color:#EFC036;background-color:#E6B036;background-color:red;color:#000000;cursor:pointer;}

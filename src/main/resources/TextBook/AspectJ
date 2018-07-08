@@ -1,0 +1,20 @@
+the difference among AOP/SpringAOP/AspectJ:
+AOP:Aspect Oriented Programming,a standard programming.Aop的典型应用即spring的事务机制，日志记录。
+利用AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。
+主要功能是：日志记录，性能统计，安全控制，事务处理，异常处理等等；主要的意图是：将日志记录，性能统计，安全控制，事务处理，
+异常处理等代码从业务逻辑代码中划分出来，通过对这些行为的分离，我们希望可以将它们独立到非指导业务逻辑的方法中，进而改变这些行为的时候不影响业务逻辑的代码。
+AspectJ和Spring AOP 是AOP的两种实现方案，这一点要搞清楚。
+那么：AspectJ和SpringAOP又是什么关系呢？
+答：不妨可将Spring AOP看成是Spring这个庞大的集成框架为了集成AspectJ而出现的一个模块。也就是说SpringAop是Spring和AspectJ整合的产物
+注意：现在的spring整合了aspectj，在spring体系中可以使用aspectj语法来实现aop。
+AspectJ和SpringAop哪个更好？
+答：得根据具体需求，不过我个人认为在对AOP的需求不那么深入和迫切的时候，使用Spring AOP足矣。
+#########################################################AspectJ和SpringAop的区别完##################################################################
+2.Execution表达式的使用：execution(* com.predicate.user.service..*.*(..))
+符号含义：
+execution():表达式主体
+第一个“*”号：表示返回值的任意类型
+com.predicate.user.service:需要被代理的包名
+包名后面的“..”:表示当前包及子包
+第二个“*”:表示类名，*表示所有类
+.*(..):表示任何方法名、括号表示方法的参数，两个点表示任意参数类型

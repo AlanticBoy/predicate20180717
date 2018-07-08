@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=" utf-8">
+    <script src="../js/jquery-1.7.1.min.js"></script>
+
+    <title>指定被打印的内容</title>
+    <script language="javascript">
+        function printMesg() {
+            var content = $("#Content").val();
+            $("#maxNo").val("123456789");
+            document.body.innerHTML = content;
+            window.print();
+        }
+
+    </script>
+</head>
+<body>
+<div id="Content">
+    <table border="1" style="width:400px">
+        <tr>
+            <td width="400px" colspan="5"><h2>郑州轻工业学院</h2></td>
+        </tr>
+        <tr>
+            <td width="50px" colspan="1">设备名称</td>
+            <td width="350px" colspan="4"></td>
+        </tr>
+        <tr>
+            <td width="50px" colspan="1">使用单位</td>
+            <td width="350px" colspan="4"></td>
+        </tr>
+        <tr>
+            <td width="80px">单价</td>
+            <td width="100px"></td>
+            <td width="100px">购置时间</td>
+            <td width="120px">2018-05-31 12:03:56</td>
+        </tr>
+        <tr>
+            <td width="50px">设备编号</td>
+            <td width="350px" colspan="4"><span id="maxNo"></span></td>
+        </tr>
+
+    </table>
+</div>
+<input name="print" type="button" id="bt" onclick="printMesg()" value="点击打印"/>
+</body>
+</html>

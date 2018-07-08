@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="predicate:war">
+    <output-path>$PROJECT_DIR$/../predicate/target</output-path>
+    <root id="archive" name="predicate.war">
+      <element id="artifact" artifact-name="predicate:war exploded" />
+    </root>
+  </artifact>
+</component>

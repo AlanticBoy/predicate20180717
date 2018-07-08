@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        #box{
+            width:200px;
+            height:200px;
+            position: absolute;
+            top:0;
+            left:200px;
+            background:lightblue;
+        }
+        .btn{
+            position:absolute;
+            top:200px;
+            left:100px;
+            height:50px;
+        }
+        .btn input{
+            display:inline-block;
+            margin-left:50px;
+            outline: none;
+            width:100px;
+            height:50px;
+            border:1px solid green;
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+<div id='box'></div>
+<div class='btn'>
+    <input type="button" value='向左' id='btnLeft'>
+    <input type="button" value='向右' id='btnRight'>
+</div>
+<script>
+    var oBox = document.getElementById("box");
+    var minLeft = 0;
+    var maxLeft = utils.win('clientWidth')-oBox.offsetWidth;
+    var step = 5;
+    var timer = null;
+    function move(target){
+        //target:告诉我要运动的目标位置
+        _move();
+        function _move(){
+            window.clearTimeout(timer);
+            var curLeft = utils.css(oBox,"left");
+            if(curLeft<target){//向右走
+                if(curLeft+step>target){//边界
+                    utils.css(oBox,"left",target);
+                    return;
+                }
+                curLeft+=step;
+                utils.css(oBox,"left",curLeft)
+            }else if(curLeft>target){//向左走
+                if(curLeft-step<target){//边界
+                    utils.css(oBox,"left",target);
+                    return;
+                }
+                curLeft-=step;
+                utils.css(oBox,"left",curLeft)
+            }else{//不需要运动
+                return;
+            }
+            timer = window.setTimeout(_move,10);
+        }
+    }
+    document.getElementById('btnLeft').onclick = function(){
+        move(minLeft)
+    }
+    document.getElementById('btnRight').onclick = function(){
+        move(maxLeft)
+    }
+</script>
+</body>
+</html>
